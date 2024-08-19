@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:totp/status/parent.dart';
-import 'package:totp/ui/list.dart';
 
 void main() {
   runApp(const MyApp());
