@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:totp/ui/List.dart';
+import 'package:totp/status/parent.dart';
+import 'package:totp/ui/list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const TotpList(title: "TOTP"),
+      // home: const TotpList(title: "TOTP"),
+      home: const Parent(),
     );
   }
 }
