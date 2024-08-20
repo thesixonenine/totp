@@ -17,7 +17,7 @@ class _TotpListState extends State<TotpList> {
       children.add(ListTile(
         leading: const Icon(Icons.key),
         title: Text(i.toString()),
-        textColor: Colors.red,
+        textColor: Colors.primaries[i % 18],
         subtitle: Text("Sub $i"),
         subtitleTextStyle: const TextStyle(fontSize: 20, color: Colors.blue),
       ));
