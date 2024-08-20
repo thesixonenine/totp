@@ -17,6 +17,10 @@
 .metadata text eol=lf
 *.plist text eol=lf
 *.xcconfig text eol=lf
+*.cc text eol=lf
+*.h text eol=lf
+*.cmake text eol=lf
+*.swift text eol=lf
 
 *.jar binary
 *.png binary
