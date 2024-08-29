@@ -18,10 +18,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
-    - name: Build
+    - name: set up Flutter 3.24.0
       uses: mobiledevops/flutter-sdk-action@v1.0.0
       with:
         flutter-sdk-version: 3.24.0
+    - name: Build
       run: |
         flutter --version
         flutter build apk --target-platform android-arm64 --split-per-abi
