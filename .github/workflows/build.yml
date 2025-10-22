@@ -32,6 +32,7 @@ jobs:
     - name: Build
       run: |
         find . -type f -name "*.gradle" -exec sed -i '/aliyun/d' {} +
+        find . -type f -name "*.gradle" -exec sed -i '/tencent/d' {} +
         find . -name 'gradle-wrapper.properties' -exec sed -i 's/mirrors\.cloud\.tencent\.com\/gradle/services.gradle.org\/distributions/g' {} +
         flutter --version
         flutter build apk --target-platform android-arm64 --split-per-abi
