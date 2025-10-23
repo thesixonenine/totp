@@ -13,10 +13,10 @@ jobs:
         platform:
 #          - name: android-arm32
 #            os: ubuntu-latest
-#            build_command: flutter build apk --target-platform android‐arm --split-per-abi
+#            build_command: flutter build apk --target-platform android-arm --split-per-abi
           - name: android-arm64
             os: ubuntu-latest
-            build_command: flutter build apk --target-platform android‐arm64 --split-per-abi
+            build_command: flutter build apk --target-platform android-arm64 --split-per-abi
 #          - name: ios-nosign
 #            os: macos-latest
 #            build_command: flutter build ipa --export-options-plist=ios/Runner/ExportOptions.plist --no-codesign
