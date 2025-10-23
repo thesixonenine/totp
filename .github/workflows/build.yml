@@ -34,6 +34,11 @@ jobs:
         find . -type f -name "*.gradle" -exec sed -i '/aliyun/d' {} +
         find . -type f -name "*.gradle" -exec sed -i '/tencent/d' {} +
         find . -name 'gradle-wrapper.properties' -exec sed -i 's/mirrors\.cloud\.tencent\.com\/gradle/services.gradle.org\/distributions/g' {} +
+        touch ./android/local.properties
+        echo "flutter.buildMode=release" >> ./android/local.properties
+        echo "flutter.versionName=1.0.0" >> ./android/local.properties
+        echo "flutter.versionCode=1" >> ./android/local.properties
+        cat ./android/local.properties
         flutter --version
         flutter build apk --target-platform android-arm64 --split-per-abi
         ls -hl build/app/outputs/flutter-apk
