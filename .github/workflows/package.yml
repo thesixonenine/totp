@@ -11,20 +11,20 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - name: android-arm32
-            os: ubuntu-latest
-            build_command: flutter build apk --target-platform=android‐arm32 --split-per-abi
+#          - name: android-arm32
+#            os: ubuntu-latest
+#            build_command: flutter build apk --target-platform=android‐arm --split-per-abi
           - name: android-arm64
             os: ubuntu-latest
             build_command: flutter build apk --target-platform=android‐arm64 --split-per-abi
 #          - name: ios-nosign
 #            os: macos-latest
 #            build_command: flutter build ipa --export-options-plist=ios/Runner/ExportOptions.plist --no-codesign
-          - name: linux-x86_64
-            os: ubuntu-latest
-            build_command: |
-              flutter config --enable-linux-desktop
-              flutter build linux --release
+#          - name: linux-x86_64
+#            os: ubuntu-latest
+#            build_command: |
+#              flutter config --enable-linux-desktop
+#              flutter build linux --release
 #          - name: macos
 #            os: macos-latest
 #            build_command: |
@@ -44,14 +44,15 @@ jobs:
           flutter-version: 3.35.6
       - name: Get dependencies
         run: |
+          yes | flutter doctor --android-licenses
           flutter doctor -v
           flutter pub get
       - name: Enable desktop support (if needed)
         if: matrix.platform.name == 'linux-x86_64' || matrix.platform.name == 'macos' || matrix.platform.name == 'windows-x86_64'
         run: |
           flutter config --enable-linux-desktop
-#          flutter config --enable-macos-desktop
-#          flutter config --enable-windows-desktop
+          flutter config --enable-macos-desktop
+          flutter config --enable-windows-desktop
 
       - name: Build (${{ matrix.platform.name }})
         run: |
