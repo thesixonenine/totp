@@ -13,7 +13,7 @@ jobs:
         platform:
           - name: android-arm32
             os: ubuntu-latest
-            build_command: flutter build apk --target-platform=android‐arm --split-per-abi
+            build_command: flutter build apk --target-platform=android‐arm32 --split-per-abi
           - name: android-arm64
             os: ubuntu-latest
             build_command: flutter build apk --target-platform=android‐arm64 --split-per-abi
@@ -43,7 +43,9 @@ jobs:
           channel: stable
           flutter-version: 3.35.6
       - name: Get dependencies
-        run: flutter pub get
+        run: |
+          flutter doctor -v
+          flutter pub get
       - name: Enable desktop support (if needed)
         if: matrix.platform.name == 'linux-x86_64' || matrix.platform.name == 'macos' || matrix.platform.name == 'windows-x86_64'
         run: |
