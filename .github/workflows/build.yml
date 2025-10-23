@@ -40,6 +40,7 @@ jobs:
         echo "flutter.versionCode=1" >> ./android/local.properties
         cat ./android/local.properties
         flutter --version
+        flutter pub get
         flutter build apk --target-platform android-arm64 --split-per-abi
         ls -hl build/app/outputs/flutter-apk
     - uses: actions/upload-artifact@v4
