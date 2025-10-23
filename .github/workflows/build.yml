@@ -39,8 +39,8 @@ jobs:
         echo "flutter.versionName=1.0.0" >> ./android/local.properties
         echo "flutter.versionCode=1" >> ./android/local.properties
         cat ./android/local.properties
-        flutter --version
-        yes | flutter doctor --android-licenses
+        flutter doctor -v
+#        yes | flutter doctor --android-licenses
         flutter build apk --target-platform android-arm64 --split-per-abi
         ls -hl build/app/outputs/flutter-apk
     - uses: actions/upload-artifact@v4
