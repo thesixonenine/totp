@@ -1,4 +1,4 @@
-package site.thesixonenine.totp
+package io.github.thesixonenine.totp
 
 import io.flutter.embedding.android.FlutterActivity
 
