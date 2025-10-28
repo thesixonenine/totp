@@ -13,7 +13,8 @@ jobs:
             build_command: flutter build apk --target-platform android-arm64 --split-per-abi
           - name: ios-nosign
             os: macos-latest
-            build_command: flutter build ipa --export-options-plist=ios/Runner/ExportOptions.plist --no-codesign
+#            build_command: flutter build ipa --export-options-plist=ios/Runner/ExportOptions.plist --no-codesign
+            build_command: flutter build ipa --no-codesign
           - name: linux-x86_64
             os: ubuntu-latest
             build_command: flutter build linux --release
@@ -67,7 +68,9 @@ jobs:
           key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
       - name: Flutter Doctor & Dependencies
         run: |
-          yes | flutter doctor --android-licenses
+          if [[ "$RUNNER_OS" != "Windows" ]]; then
+            yes | flutter doctor --android-licenses
+          fi
           flutter doctor -v
           flutter pub get
       - name: Install Linux build dependencies
