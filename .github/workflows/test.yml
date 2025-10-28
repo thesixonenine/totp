@@ -1,0 +1,88 @@
+name: Test CI
+
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - name: android-arm64
+            os: ubuntu-latest
+            build_command: flutter build apk --target-platform android-arm64 --split-per-abi
+          - name: ios-nosign
+            os: macos-latest
+            build_command: flutter build ipa --export-options-plist=ios/Runner/ExportOptions.plist --no-codesign
+          - name: linux-x86_64
+            os: ubuntu-latest
+            build_command: flutter build linux --release
+          - name: windows-x86_64
+            os: windows-latest
+            build_command: flutter build windows --release
+
+    runs-on: ${{ matrix.platform.os }}
+    env:
+      TZ: Asia/Shanghai
+      FLUTTER_VERSION: 3.35.7
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove Mirror
+        run: |
+          find . -type f -name "*.gradle" -exec sed -i '/aliyun/d' {} +
+          find . -type f -name "*.gradle" -exec sed -i '/tencent/d' {} +
+          find . -name 'gradle-wrapper.properties' -exec sed -i 's/mirrors\.cloud\.tencent\.com\/gradle/services.gradle.org\/distributions/g' {} +
+          touch ./android/local.properties
+          echo "flutter.buildMode=release" >> ./android/local.properties
+          echo "flutter.versionName=1.0.0" >> ./android/local.properties
+          echo "flutter.versionCode=1" >> ./android/local.properties
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            .dart_tool
+          key: ${{ runner.os }}-pub-${{ hashFiles('pubspec.lock') }}
+      - name: Cache Gradle
+        if: runner.os == 'Linux' || runner.os == 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+      - name: Cache CocoaPods
+        if: runner.os == 'macOS'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+      - name: Flutter Doctor & Dependencies
+        run: |
+          yes | flutter doctor --android-licenses
+          flutter doctor -v
+          flutter pub get
+      - name: Enable desktop support (if needed)
+        if: contains(matrix.platform.name, 'linux') || contains(matrix.platform.name, 'macos') || contains(matrix.platform.name, 'windows')
+        run: flutter config --enable-${{ matrix.platform.name%%-* }}-desktop
+      - name: Build (${{ matrix.platform.name }})
+        run: |
+          echo "Building for platform: ${{ matrix.platform.name }}"
+          ${{ matrix.platform.build_command }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.platform.name }}
+          path: |
+            build/app/outputs/**/**/*.apk
+            build/windows/runner/**/*.exe
+            build/linux/x64/release/bundle/**
+            build/ios/ipa/**
