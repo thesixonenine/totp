@@ -66,11 +66,12 @@ jobs:
             ios/Pods
             ~/Library/Caches/CocoaPods
           key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+      - name: yes for android licenses
+        if: contains(matrix.platform.name, 'android')
+        run: |
+          yes | flutter doctor --android-licenses
       - name: Flutter Doctor & Dependencies
         run: |
-          if [[ "$RUNNER_OS" != "Windows" ]]; then
-            yes | flutter doctor --android-licenses
-          fi
           flutter doctor -v
           flutter pub get
       - name: Install Linux build dependencies
