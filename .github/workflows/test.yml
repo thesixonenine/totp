@@ -102,6 +102,6 @@ jobs:
           name: build-${{ matrix.platform.name }}
           path: |
             build/app/outputs/**/**/*.apk
-            build/windows/runner/**/*.exe
+            build/windows/x64/runner/**/*.exe
             build/linux/x64/release/bundle/**
             build/ios/ipa/**
