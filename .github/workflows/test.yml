@@ -72,7 +72,10 @@ jobs:
           flutter pub get
       - name: Enable desktop support (if needed)
         if: contains(matrix.platform.name, 'linux') || contains(matrix.platform.name, 'macos') || contains(matrix.platform.name, 'windows')
-        run: flutter config --enable-${{ matrix.platform.name%%-* }}-desktop
+        run: |
+          flutter config --enable-linux-desktop
+          flutter config --enable-macos-desktop
+          flutter config --enable-windows-desktop
       - name: Build (${{ matrix.platform.name }})
         run: |
           echo "Building for platform: ${{ matrix.platform.name }}"
