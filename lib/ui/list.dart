@@ -26,6 +26,10 @@ class _TotpListState extends State<TotpList> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          actions: <Widget>[
+            // IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
+            IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
+          ],
         ),
         body: ListView(children: children));
   }
